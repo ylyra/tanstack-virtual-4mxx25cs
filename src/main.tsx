@@ -9,7 +9,7 @@ import {
   useReactTable,
 } from '@tanstack/react-table'
 import { makeData } from './makeData'
-import type { ColumnDef, Row, SortingState } from '@tanstack/react-table'
+import type { ColumnDef, SortingState } from '@tanstack/react-table'
 import type { Person } from './makeData'
 import './index.css'
 
@@ -61,7 +61,7 @@ function ReactTableVirtualized() {
     [],
   )
 
-  const [data, setData] = React.useState(() => makeData(20_000))
+  const [data] = React.useState(() => makeData(20_000))
 
   const table = useReactTable({
     data,
@@ -84,7 +84,6 @@ function ReactTableVirtualized() {
     estimateSize: () => 34,
     overscan: 5,
     scrollMargin: parentRef.current?.offsetTop ?? 0,
-    
   })
 
   return (
@@ -97,7 +96,11 @@ function ReactTableVirtualized() {
         }}
       >
         <table>
-          <thead>
+          <thead style={{
+            position: 'sticky',
+            top: 0,
+            background: '#FFF'
+          }}>
             {table.getHeaderGroups().map((headerGroup) => (
               <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -179,13 +182,6 @@ function App() {
       <ReactTableVirtualized />
       <br />
       <br />
-      {process.env.NODE_ENV === 'development' ? (
-        <p>
-          <strong>Notice:</strong> You are currently running React in
-          development mode. Rendering performance will be slightly degraded
-          until this application is built for production.
-        </p>
-      ) : null}
     </div>
   )
 }
